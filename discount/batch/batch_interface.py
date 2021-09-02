@@ -1,14 +1,13 @@
 import uuid
 from typing import List, Optional
 
-from batch import Batch
-from batch_repo import BatchRepository
-from brand import Brand
-from brand_interface import BrandInterface
-from code import Code
-from code_repository import CodeRepository
-from price_rule import PriceRule
-from price_rule_interface import PriceRuleInterface
+from discount.batch.code import Code
+from discount.brand.brand import Brand
+from discount.brand.brand_interface import BrandInterface
+from discount.price_rule.price_rule import PriceRule
+from discount.price_rule.price_rule_interface import PriceRuleInterface
+from discount.batch.batch import Batch
+from discount.batch.batch_repo import BatchRepository
 
 
 class BatchInterface:
@@ -16,7 +15,6 @@ class BatchInterface:
         self._batch_repository = BatchRepository()
         self._brand_interface = BrandInterface()
         self._price_rule_interface = PriceRuleInterface()
-        self._code_repository = CodeRepository()
 
     def create_batch(
         self,

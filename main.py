@@ -4,9 +4,9 @@ from http import HTTPStatus
 
 from fastapi import FastAPI
 
-from error_codes import NO_CODE_AVAILABLE_ERROR
-from responses import CreateBatchResponse, SuccessGetAvailableCodeResponse, Message
-from batch_interface import BatchInterface
+from discount.batch.batch_interface import BatchInterface
+from discount.error_codes import NO_CODE_AVAILABLE_ERROR
+from discount.responses import SuccessGetAvailableCodeResponse, Message, CreateBatchResponse
 
 app = FastAPI()
 batch_interface = BatchInterface()

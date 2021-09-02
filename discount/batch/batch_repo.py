@@ -2,8 +2,8 @@ import uuid
 from collections import defaultdict
 from typing import Optional, Dict, List, Set
 
-from batch import Batch, BatchStatus
-from code import Code
+from discount.batch.batch import Batch, BatchStatus
+from discount.batch.code import Code
 
 
 class BatchRepository:
@@ -14,7 +14,7 @@ class BatchRepository:
         ] = defaultdict(dict)
         self._available_codes_for_batch: Dict[uuid.UUID, List[Code]] = {}
         self._batches: Dict[uuid.UUID, Batch] = {}
-        self._brand_batches = Dict[int, Set[Batch]] = {}
+        # self._brand_batches = Dict[int, Set[Batch]] = {}
 
     def get_available_code(self, user_id: uuid.UUID, batch_ref) -> Optional[Code]:
         already_consumed_code = self._get_already_consumed_code(
@@ -54,11 +54,11 @@ class BatchRepository:
             status=BatchStatus.PROCESSING,
         )
         self._batches[batch_ref] = batch
-        batches = self._brand_batches.get(brand_id)
-        if not batches:
-            self._brand_batches[brand_id] = {batch}
-        else:
-            batches.add(batch)
+        # batches = self._brand_batches.get(brand_id)
+        # if not batches:
+        #     self._brand_batches[brand_id] = {batch}
+        # else:
+        #     batches.add(batch)
 
         return batch
 
@@ -69,4 +69,4 @@ class BatchRepository:
 
     def create_codes(self, batch: Batch, codes: List[Code]):
         self._available_codes_for_batch[batch.batch_ref] = codes
-        self._batches[batch.batch_ref].status = BatchStatus.COMPLETE
+        # self._batches[batch.batch_ref].status = BatchStatus.COMPLETE

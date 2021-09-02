@@ -1,6 +1,6 @@
 import uuid
 
-from brand import Brand
+from discount.brand.brand import Brand
 
 
 class BrandInterface:
