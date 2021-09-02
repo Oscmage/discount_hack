@@ -1,7 +1,7 @@
 import unittest
 import uuid
 
-from code import Code
+from app.code import Code
 
 
 class BatchRepoTest(unittest.TestCase):
