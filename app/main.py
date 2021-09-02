@@ -3,34 +3,13 @@ import uuid
 from http import HTTPStatus
 
 from fastapi import FastAPI
-from fastapi.responses import JSONResponse
 
+from error_codes import NO_CODE_AVAILABLE_ERROR
+from responses import CreateBatchResponse, SuccessGetAvailableCodeResponse, Message
 from batch_interface import BatchInterface
 
 app = FastAPI()
 batch_interface = BatchInterface()
-
-
-NO_CODE_AVAILABLE_ERROR = JSONResponse(
-    status_code=404, content={"message": "No code available"}
-)
-
-
-@dataclasses.dataclass
-class CreateBatchResponse:
-    batch_ref: uuid.UUID
-    number_of_codes: int
-    price_rule_ref: uuid.UUID
-
-
-@dataclasses.dataclass
-class SuccessGetAvailableCodeResponse:
-    code: str
-
-
-@dataclasses.dataclass
-class Message:
-    message: str
 
 
 @app.get("/ping")
