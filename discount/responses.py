@@ -3,14 +3,14 @@ import uuid
 
 
 @dataclasses.dataclass
-class CreateBatchResponse:
+class CreateBatchSuccessResponse:
     batch_ref: uuid.UUID
     number_of_codes: int
     price_rule_ref: uuid.UUID
 
 
 @dataclasses.dataclass
-class SuccessGetAvailableCodeResponse:
+class GetAvailableCodeSuccessResponse:
     code: str
 
 

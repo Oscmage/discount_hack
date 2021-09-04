@@ -6,14 +6,18 @@ from fastapi import FastAPI
 
 from discount.batch.batch_interface import BatchInterface
 from discount.error_codes import NO_CODE_AVAILABLE_ERROR
-from discount.responses import SuccessGetAvailableCodeResponse, Message, CreateBatchResponse
+from discount.responses import (
+    GetAvailableCodeSuccessResponse,
+    Message,
+    CreateBatchSuccessResponse,
+)
 
 app = FastAPI()
 batch_interface = BatchInterface()
 
 
 @app.get("/ping")
-def read_root():
+def ping():
     return {"Hello": "World"}
 
 
@@ -32,7 +36,7 @@ def create_batch(
         brand_ref=brand_ref,
     )
     return dataclasses.asdict(
-        CreateBatchResponse(
+        CreateBatchSuccessResponse(
             batch_ref=batch.batch_ref,
             number_of_codes=batch.number_of_codes,
             price_rule_ref=price_rule_ref,
@@ -42,7 +46,7 @@ def create_batch(
 
 @app.get(
     "/v1/retrieve_code/{batch_ref}/{user_id}",
-    response_model=SuccessGetAvailableCodeResponse,
+    response_model=GetAvailableCodeSuccessResponse,
     responses={404: {"model": Message}},
 )
 def get_available_code(batch_ref: uuid.UUID, user_id: uuid.UUID):
@@ -53,4 +57,4 @@ def get_available_code(batch_ref: uuid.UUID, user_id: uuid.UUID):
     if not code:
         return NO_CODE_AVAILABLE_ERROR
 
-    return SuccessGetAvailableCodeResponse(code=code.code)
+    return GetAvailableCodeSuccessResponse(code=code.code)
