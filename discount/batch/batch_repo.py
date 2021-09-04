@@ -14,7 +14,7 @@ class BatchRepository:
         ] = defaultdict(dict)
         self._available_codes_for_batch: Dict[uuid.UUID, List[Code]] = {}
         self._batches: Dict[uuid.UUID, Batch] = {}
-        # self._brand_batches = Dict[int, Set[Batch]] = {}
+        self._brand_batches: Dict[int, Set[uuid.UUID]] = {}
 
     def get_available_code(self, user_id: uuid.UUID, batch_ref) -> Optional[Code]:
         already_consumed_code = self._get_already_consumed_code(
@@ -54,11 +54,11 @@ class BatchRepository:
             status=BatchStatus.PROCESSING,
         )
         self._batches[batch_ref] = batch
-        # batches = self._brand_batches.get(brand_id)
-        # if not batches:
-        #     self._brand_batches[brand_id] = {batch}
-        # else:
-        #     batches.add(batch)
+        batches = self._brand_batches.get(brand_id)
+        if not batches:
+            self._brand_batches[brand_id] = {batch.batch_ref}
+        else:
+            batches.add(batch.batch_ref)
 
         return batch
 
@@ -69,4 +69,17 @@ class BatchRepository:
 
     def create_codes(self, batch: Batch, codes: List[Code]):
         self._available_codes_for_batch[batch.batch_ref] = codes
-        # self._batches[batch.batch_ref].status = BatchStatus.COMPLETE
+        self._update_batch_status(
+            batch_ref=batch.batch_ref, status=BatchStatus.COMPLETE
+        )
+
+    def _update_batch_status(self, batch_ref: uuid.UUID, status: BatchStatus):
+        batch = self._batches[batch_ref]
+        self._batches[batch.batch_ref] = Batch(
+            id=batch.id,
+            number_of_codes=batch.number_of_codes,
+            batch_ref=batch.batch_ref,
+            price_rule_id=batch.price_rule_id,
+            brand_id=batch.brand_id,
+            status=status,
+        )
