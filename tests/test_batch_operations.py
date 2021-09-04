@@ -3,9 +3,9 @@ from http import HTTPStatus
 
 from fastapi.testclient import TestClient
 
-from main import app
+import main
 
-client = TestClient(app)
+client = TestClient(main.start())
 
 
 class TestBatchOperations:

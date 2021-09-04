@@ -11,10 +11,15 @@ from discount.batch.batch_repo import BatchRepository
 
 
 class BatchInterface:
-    def __init__(self):
-        self._batch_repository = BatchRepository()
-        self._brand_interface = BrandInterface()
-        self._price_rule_interface = PriceRuleInterface()
+    def __init__(
+        self,
+        batch_repository: BatchRepository,
+        brand_interface: BrandInterface,
+        price_rule_interface: PriceRuleInterface,
+    ):
+        self._batch_repository = batch_repository
+        self._brand_interface = brand_interface
+        self._price_rule_interface = price_rule_interface
 
     def create_batch(
         self,
@@ -33,14 +38,14 @@ class BatchInterface:
             price_rule_id=price_rule.id,
         )
         # TODO: This should be a scheduled asynchronous task
-        self.create_codes_async(
+        self._create_codes_async(
             batch=batch,
             number_of_codes=number_of_codes,
         )
 
         return batch
 
-    def create_codes_async(self, batch: Batch, number_of_codes: int):
+    def _create_codes_async(self, batch: Batch, number_of_codes: int):
         codes: List[Code] = []
         for i in range(0, number_of_codes):
             codes.append(
