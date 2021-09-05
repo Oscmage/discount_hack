@@ -17,6 +17,7 @@ class BatchRepository:
         self._brand_batches: Dict[int, Set[uuid.UUID]] = {}
 
     def get_available_code(self, user_id: uuid.UUID, batch_ref) -> Optional[Code]:
+        # TODO: Move business logic out from repo and up to interface.
         already_consumed_code = self._get_already_consumed_code(
             user_id=user_id, batch_ref=batch_ref
         )

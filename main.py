@@ -24,9 +24,13 @@ def start():
         price_rule_interface=PriceRuleInterface(),
     )
 
+    @app.get("/")
+    def alive():
+        return "Discount service is running"
+
     @app.get("/ping")
     def ping():
-        return {"Hello": "World"}
+        return "pong"
 
     @app.post(
         "/v1/create_batch/{number_of_codes}/{price_rule_ref}/{brand_ref}",

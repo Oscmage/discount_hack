@@ -61,6 +61,19 @@ class BatchInterface:
     def get_available_code(
         self, user_id: uuid.UUID, batch_ref: uuid.UUID
     ) -> Optional[Code]:
-        return self._batch_repository.get_available_code(
+        code = self._batch_repository.get_available_code(
             user_id=user_id, batch_ref=batch_ref
         )
+
+        if code:
+            self._emit_notification_of_code_retrieval(
+                user_id=user_id, batch_ref=batch_ref
+            )
+
+        return code
+
+    def _emit_notification_of_code_retrieval(
+        self, user_id: uuid.UUID, batch_ref: uuid.UUID
+    ):
+        # Emit pubsub message
+        pass
